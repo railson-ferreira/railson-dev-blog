@@ -22,8 +22,8 @@
               "type": "markdown",
               "state": {
                 "file": "headless-scalable-blog-engine.md",
-                "mode": "source",
-                "source": false
+                "mode": "preview",
+                "source": true
               }
             }
           }
