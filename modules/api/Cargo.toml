@@ -1,0 +1,20 @@
+[package]
+name = "lambda-actix-juniper"
+version = "1.0.0"
+edition = "2021"
+
+[[bin]]
+name = "bootstrap"
+path = "src/main.rs"
+
+[dependencies]
+lambda-web = { version = "0.2.1", features=["actix4"] }
+actix-web = "4.4.0"
+juniper = "0.15.11"
+serde = "1.0.188"
+serde_json = "1.0.107"
+env_logger = "0.10.0"
+chrono = "0.4.31"
+aws-sdk-dynamodb = "0.33.0"
+aws-config = "0.56.1"
+
