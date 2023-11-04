@@ -32,7 +32,7 @@ async fn main() {
         // if posts_list.contains(post_identification)
 
         let uid = post_identification.uid;
-        let updating_date_time = DateTime::from_timestamp(post_identification.timestamp as i64, 0).unwrap().to_rfc3339();
+        let updating_date_time = DateTime::from_timestamp(post_identification.timestamp, 0).unwrap().to_rfc3339();
         let content_markdown = get_post_content(path.path());
 
         println!("uploading: {} | uid({}) | updating_date_time({})", path.file_name().to_str().unwrap(), uid, updating_date_time);
