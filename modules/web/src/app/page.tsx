@@ -1,11 +1,11 @@
 import {gql, GraphQLClient} from "graphql-request";
 
 export default async function Home() {
-  const data = await fetchData();
+  const data: any = await fetchData();
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        {data.posts.map(post => {
+        {data.posts.map((post:any) => {
           const {uid, timestamp, filePath, contentMarkdown} = post
           const title = contentMarkdown.match(/title: (.+)/)[1];
           const slug = filePath.replace(".md","");
@@ -44,7 +44,7 @@ async function fetchData() {
         contentMarkdown
       }
     }`
-  const client = new GraphQLClient(process.env.GRAPHQL_URL)
+  const client = new GraphQLClient(process.env.GRAPHQL_URL!)
   return await client.request(query)
 }
 

@@ -4,14 +4,14 @@ import Markdown from "react-markdown";
 import {notFound} from "next/navigation";
 import Seo from "@/app/[post-slug]/[post-uid]/[post-timestamp]/seo";
 
-export default async function Page({params}) {
-  const data = await fetchData(params["post-uid"], params["post-timestamp"]);
+export default async function Page({params}: any) {
+  const data: any = await fetchData(params["post-uid"], params["post-timestamp"]);
   if (data.post == null) {
     notFound()
   }
   const {uid, timestamp, filePath, contentMarkdown} = data.post
   const title = contentMarkdown.match(/title: (.+)/)[1];
-  const slug = filePath.replace(".md","");
+  const slug = filePath.replace(".md", "");
   return (
     <>
       <Seo
@@ -29,17 +29,16 @@ export default async function Page({params}) {
   );
 }
 
-async function fetchData(postUid, postTimestamp) {
+async function fetchData(postUid: string, postTimestamp: string) {
   const query = gql`{
-      post(uid: "${postUid}",updatingDateTime: "${new Date(Number(postTimestamp * 1000)).toISOString().replace(".000Z", "+00:00")}") {
+      post(uid: "${postUid}",updatingDateTime: "${new Date(Number(postTimestamp) * 1000).toISOString().replace(".000Z", "+00:00")}") {
         uid,
         timestamp,
         filePath,
         contentMarkdown
       }
     }`
-  console.log(query);
-  const client = new GraphQLClient(process.env.GRAPHQL_URL)
+  const client = new GraphQLClient(process.env.GRAPHQL_URL!)
   return await client.request(query)
 }
 

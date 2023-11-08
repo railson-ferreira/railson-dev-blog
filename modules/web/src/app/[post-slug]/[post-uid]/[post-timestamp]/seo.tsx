@@ -2,7 +2,7 @@
 import React from 'react';
 import { NextSeo } from 'next-seo';
 
-function Seo({title, slug, uid, timestamp}) {
+function Seo({title, slug, uid, timestamp}:any) {
   return (
 
     <NextSeo
