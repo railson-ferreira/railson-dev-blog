@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Railson Dev Blog',
   description: 'Made with ☕ by Rai',
+  openGraph: {
+    images: ['/seo.png'],
+  },
 }
 
 export default function RootLayout({
