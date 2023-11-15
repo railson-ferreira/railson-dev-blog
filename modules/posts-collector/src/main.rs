@@ -3,15 +3,22 @@ mod dynamo_db;
 
 use std::process::Command;
 use std::fs;
+use std::env;
 use std::io::{BufRead, BufReader, Read, Seek, SeekFrom};
 use std::path::PathBuf;
-use chrono::{DateTime};
+use chrono::{DateTime, SecondsFormat};
 use crate::post_identification::PostIdentification;
 
 
 #[tokio::main]
 async fn main() {
-    let posts_folder_path = "../../posts";
+    let args: Vec<String> = env::args().collect();
+    let posts_path = args.get(1);
+
+    let posts_folder_path = match posts_path {
+        Some(value) => value,
+        None => panic!("Please inform the posts path as argument")
+    };
     let git_revision = get_git_revision(posts_folder_path.to_string());
     let paths = fs::read_dir(posts_folder_path.to_string()).unwrap();
 
@@ -32,7 +39,7 @@ async fn main() {
         // if posts_list.contains(post_identification)
 
         let uid = post_identification.uid;
-        let updating_date_time = DateTime::from_timestamp(post_identification.timestamp, 0).unwrap().to_rfc3339();
+        let updating_date_time = DateTime::from_timestamp(post_identification.timestamp, 0).unwrap().to_rfc3339_opts(SecondsFormat::Secs,true);
         let content_markdown = get_post_content(path.path());
 
         println!("uploading: {} | uid({}) | updating_date_time({})", path.file_name().to_str().unwrap(), uid, updating_date_time);
@@ -94,7 +101,7 @@ fn get_post_identification(path: PathBuf) -> PostIdentification {
 
     return PostIdentification {
         uid: post_uid,
-        timestamp: timestamp.timestamp() as u64,
+        timestamp: timestamp.timestamp(),
     };
 }
 
