@@ -94,7 +94,7 @@ fn get_post_identification(path: PathBuf) -> PostIdentification {
     assert!(post_timestamp_prop.starts_with("timestamp: "));
 
 
-    let post_uid = post_uid_prop.replace("uid: ", "").replace("\"", "");
+    let post_uid = post_uid_prop.replace("uid: ", "").replace("\"", "").replace("\n", "");
     let post_timestamp_iso = post_timestamp_prop.replace("timestamp: ", "").replace("\n", "Z");
 
     let timestamp = DateTime::parse_from_rfc3339(post_timestamp_iso.as_str()).unwrap();
