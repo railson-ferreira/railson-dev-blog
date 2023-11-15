@@ -1,4 +1,5 @@
 import {gql, GraphQLClient} from "graphql-request";
+import {Metadata} from "next";
 
 type Post ={
   uid: string,
@@ -6,7 +7,16 @@ type Post ={
   filePath:string,
   contentMarkdown:string
 }
-
+export const metadata: Metadata = {
+  metadataBase: new URL('https://blog.railson.dev'),
+  title: "Railson Dev Blog",
+  description: "Made with ☕ by Rai",
+  openGraph: {
+    title: "Railson Dev Blog",
+    description: "Made with ☕ by Rai",
+    images: ['/seo.png'],
+  },
+}
 export default async function Home() {
   const data = await fetchData();
   const posts = data.posts.filter((post,index,array)=>array.findIndex(x=>x.uid === post.uid) === index).sort((a, b) => a.timestamp - b.timestamp)
