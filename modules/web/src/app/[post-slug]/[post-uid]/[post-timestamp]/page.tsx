@@ -52,7 +52,7 @@ export default async function Page({params}: any) {
 
 async function fetchData(postUid: string, postTimestamp: string) {
   const query = gql`{
-      post(uid: "${postUid}",updatingDateTime: "${new Date(Number(postTimestamp) * 1000).toISOString().replace(".000Z", "+00:00")}") {
+      post(uid: "${postUid}",updatingDateTime: "${new Date(Number(postTimestamp) * 1000).toISOString().replace(".000Z", "Z")}") {
         uid,
         timestamp,
         filePath,
