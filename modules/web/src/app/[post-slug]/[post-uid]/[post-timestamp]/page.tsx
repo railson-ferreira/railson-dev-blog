@@ -1,7 +1,7 @@
 import React from 'react';
 import {gql, GraphQLClient} from "graphql-request";
 import Markdown from "markdown-to-jsx";
-import {notFound} from "next/navigation";
+import {notFound, redirect} from "next/navigation";
 import {Metadata} from "next";
 
 export async function generateMetadata(
@@ -14,6 +14,9 @@ export async function generateMetadata(
   const {uid, timestamp, filePath, contentMarkdown} = data.post
   const title = contentMarkdown.match(/title: (.+)/)[1];
   const slug = filePath.replace(".md", "");
+  if(params["post-slug"]!=slug){
+    redirect(`/${slug}/${uid}/${timestamp}`);
+  }
   return {
     title: title,
     openGraph: {

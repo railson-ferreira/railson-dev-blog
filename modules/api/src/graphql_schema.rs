@@ -1,5 +1,5 @@
 use juniper::{RootNode, EmptyMutation, EmptySubscription};
-use crate::dynamo_db::{get_client, get_post, get_posts};
+use crate::dynamo_db::{get_client, get_post, get_posts, get_posts_by_uid};
 use chrono::{DateTime};
 
 pub struct QueryRoot;
@@ -60,6 +60,35 @@ impl QueryRoot {
         );
     }
 
+    async fn posts_by_uid(uid: String) -> Vec<Post> {
+        let client = get_client().await;
+        let result = get_posts_by_uid(&client,uid).await;
+
+        let items = result
+            .unwrap()
+            .items
+            .unwrap();
+
+        let post_list = items.iter()
+            .map(|item| {
+                let uid = item.get("uid").unwrap().as_s().unwrap().to_string();
+                let timestamp = DateTime::parse_from_rfc3339(item.get("updating_date_time").unwrap().as_s().unwrap().as_str()).unwrap().timestamp() as i32;
+                let git_revision = item.get("git_revision").unwrap().as_s().unwrap().to_string();
+                let file_path = item.get("file_path").unwrap().as_s().unwrap().to_string();
+                let content_markdown = item.get("content_markdown").unwrap().as_s().unwrap().to_string();
+
+                return Post {
+                    uid: uid,
+                    timestamp: timestamp,
+                    git_revision: git_revision,
+                    file_path: file_path,
+                    content_markdown: content_markdown,
+                };
+            })
+            .collect();
+
+        return post_list;
+    }
     async fn posts() -> Vec<Post> {
         let client = get_client().await;
         let result = get_posts(&client).await;
